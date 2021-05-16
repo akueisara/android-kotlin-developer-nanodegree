@@ -1,8 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".screens.shoes.shoedetail.ShoeDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</FrameLayout>
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.udacity.shoestore.screens.shoes.shoedetail.ShoeDetailFragment" />
+
+        <variable
+            name="shoeViewModel"
+            type="com.udacity.shoestore.screens.shoes.ShoeViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/shoeInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            tools:context=".screens.shoes.shoedetail.ShoeDetailFragment">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/shoe_name" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Please enter the shoe's name"
+                    android:hint="@string/shoe_name_hint"
+                    android:inputType="text"
+                    android:text="@={shoeViewModel.shoeName}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/company" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Please enter the company name"
+                    android:hint="@string/company_hint"
+                    android:inputType="text"
+                    android:text="@={shoeViewModel.shoeCompany}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/shoe_size" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Please enter the size"
+                    android:hint="@string/shoe_size_hint"
+                    android:inputType="number|numberDecimal"
+                    android:text="@={shoeViewModel.shoeSize}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/description" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="Please enter the description"
+                    android:hint="@string/description_hint"
+                    android:inputType="text"
+                    android:text="@={shoeViewModel.shoeDescription}" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shoeInfoLayout"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:paddingBottom="32dp">
+
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> shoeViewModel.saveShoe()}"
+                android:text="@string/save"
+                android:textColor="@android:color/holo_blue_dark" />
+
+            <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:onClick="@{() -> fragment.back()}"
+                android:text="@string/cancel"
+                android:textColor="@android:color/darker_gray" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</layout>

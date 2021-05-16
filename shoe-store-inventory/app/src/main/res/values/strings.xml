@@ -26,4 +26,14 @@
 
     <!--  Shoe Detail  -->
     <string name="shoe_detail">Shoe Detail</string>
+    <string name="shoe_name">Shoe Name</string>
+    <string name="shoe_name_hint">Please enter the shoe name</string>
+    <string name="company">Company</string>
+    <string name="company_hint">Please enter the company name</string>
+    <string name="shoe_size">Shoe Size</string>
+    <string name="shoe_size_hint">Please enter the size</string>
+    <string name="description">Description</string>
+    <string name="description_hint">Please enter the description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
