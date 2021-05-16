@@ -16,4 +16,10 @@
 
     <!--  Instructions  -->
     <string name="instructions">Instructions</string>
+    <string name="save_instruction">Click the `Save` button to add a new shoe to the shoe list.</string>
+    <string name="cancel_instruction">Click the `Cancel` button to return to the shoe list.</string>
+    <string name="checkout_shoes">Check out the shoes</string>
+
+    <!--  Shoe List  -->
+    <string name="shoes">Shoes</string>
 </resources>
