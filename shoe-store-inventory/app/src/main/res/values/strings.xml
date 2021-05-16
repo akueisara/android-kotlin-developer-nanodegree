@@ -11,4 +11,9 @@
 
     <!--  Welcome  -->
     <string name="welcome">Welcome</string>
+    <string name="welcome_desc">Welcome to Shop Store!</string>
+    <string name="get_started">Get Started</string>
+
+    <!--  Instructions  -->
+    <string name="instructions">Instructions</string>
 </resources>
