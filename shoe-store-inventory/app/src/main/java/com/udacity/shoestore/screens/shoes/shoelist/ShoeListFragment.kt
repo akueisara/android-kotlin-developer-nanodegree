@@ -28,6 +28,7 @@ class ShoeListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fragment = this
         binding.lifecycleOwner = this
 
         shoeViewModel.shoes.observe(viewLifecycleOwner, { shoes ->

@@ -22,6 +22,7 @@
 
     <!--  Shoe List  -->
     <string name="shoes">Shoes</string>
+    <string name="floating_button_content_desc">Add a shoe</string>
 
     <!--  Shoe Detail  -->
     <string name="shoe_detail">Shoe Detail</string>
