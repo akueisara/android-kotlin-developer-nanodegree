@@ -22,4 +22,7 @@
 
     <!--  Shoe List  -->
     <string name="shoes">Shoes</string>
+
+    <!--  Shoe Detail  -->
+    <string name="shoe_detail">Shoe Detail</string>
 </resources>

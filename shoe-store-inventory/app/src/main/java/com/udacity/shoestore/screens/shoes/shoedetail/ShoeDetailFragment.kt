@@ -1,4 +1,4 @@
-package com.udacity.shoestore.screens.shoelist
+package com.udacity.shoestore.screens.shoes.shoedetail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.udacity.shoestore.R
 
-class ShoeListFragment : Fragment() {
+class ShoeDetailFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_shoe_list, container, false)
+        return inflater.inflate(R.layout.fragment_shoe_detail, container, false)
     }
 }
