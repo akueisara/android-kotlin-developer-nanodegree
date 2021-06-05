@@ -29,7 +29,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:contentDescription="@{viewModel.astroPictureOfDay.title}"
-                app:apodImageUrl="@{viewModel.astroPictureOfDay}" />
+                app:podImageUrl="@{viewModel.astroPictureOfDay}" />
 
             <TextView
                 android:id="@+id/textView"

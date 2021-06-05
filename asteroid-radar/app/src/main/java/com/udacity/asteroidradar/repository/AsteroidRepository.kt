@@ -9,7 +9,7 @@ import com.udacity.asteroidradar.api.NeoWSApi
 import com.udacity.asteroidradar.api.NetworkUtils
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.main.MainFragment
-import com.udacity.asteroidradar.model.AstroPictureOfDay
+import com.udacity.asteroidradar.model.PictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -32,7 +32,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
         }
 
-    val astroPictureOfDay: LiveData<AstroPictureOfDay> = database.asteroidDatabaseDao.getPictureOfTheDay()
+    val astroPictureOfDay: LiveData<PictureOfDay> = database.asteroidDatabaseDao.getPictureOfTheDay()
 
     suspend fun getAsteroids() {
         withContext(Dispatchers.IO) {

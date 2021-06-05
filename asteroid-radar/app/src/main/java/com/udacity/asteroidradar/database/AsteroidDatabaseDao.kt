@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.udacity.asteroidradar.model.Asteroid
-import com.udacity.asteroidradar.model.AstroPictureOfDay
+import com.udacity.asteroidradar.model.PictureOfDay
 
 @Dao
 interface AsteroidDatabaseDao {
@@ -24,8 +24,8 @@ interface AsteroidDatabaseDao {
     fun insert(asteroids: ArrayList<Asteroid>)
 
     @Query("SELECT * from apod_table")
-    fun getPictureOfTheDay(): LiveData<AstroPictureOfDay>
+    fun getPictureOfTheDay(): LiveData<PictureOfDay>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(picture: AstroPictureOfDay)
+    fun insert(picture: PictureOfDay)
 }

@@ -9,12 +9,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "apod_table")
-data class AstroPictureOfDay(
+data class PictureOfDay(
     @PrimaryKey(autoGenerate = true)
     val id: Long?,
-    val url: String,
     @Json(name = "media_type")
     @ColumnInfo(name = "media_type")
     val mediaType: String,
-    val title: String
+    val title: String,
+    val url: String
 ) : Parcelable

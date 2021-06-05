@@ -4,7 +4,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.model.AstroPictureOfDay
+import com.udacity.asteroidradar.model.PictureOfDay
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -40,7 +40,7 @@ interface NeoWSApiService {
     ): String
 
     @GET("/planetary/apod")
-    fun getPictureOfDayAsync(@Query("api_key") apiKey: String): Deferred<AstroPictureOfDay>
+    fun getPictureOfDayAsync(@Query("api_key") apiKey: String): Deferred<PictureOfDay>
 }
 
 /**
