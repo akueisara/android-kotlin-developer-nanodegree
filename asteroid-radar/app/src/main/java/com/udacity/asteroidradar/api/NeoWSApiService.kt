@@ -2,12 +2,11 @@ package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-
-private const val BASE_URL = "https://api.nasa.gov/"
 
 /**
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
@@ -23,7 +22,7 @@ private val moshi = Moshi.Builder()
  */
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())
-    .baseUrl(BASE_URL)
+    .baseUrl(Constants.BASE_URL)
     .build()
 
 /**
