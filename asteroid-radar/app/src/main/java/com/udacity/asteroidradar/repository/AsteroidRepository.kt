@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.NeoWSApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.api.NetworkUtils
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.main.MainFragment
 import com.udacity.asteroidradar.model.AstroPictureOfDay
@@ -40,9 +40,9 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                 val responseString = NeoWSApi.retrofitService.getAsteroidsAsync(
                     dates.first,
                     dates.second,
-                    "wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe"
+                    Constants.API_KEY
                 )
-                val asteroids = parseAsteroidsJsonResult(JSONObject(responseString))
+                val asteroids = NetworkUtils.parseAsteroidsJsonResult(JSONObject(responseString))
                 database.asteroidDatabaseDao.insert(asteroids)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -54,7 +54,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         withContext(Dispatchers.IO) {
             try {
                 val pictureOfTheDay =
-                    NeoWSApi.retrofitService.getPictureOfDayAsync("wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe")
+                    NeoWSApi.retrofitService.getPictureOfDayAsync(Constants.API_KEY)
                         .await()
                 database.asteroidDatabaseDao.insert(pictureOfTheDay)
             } catch (e: Exception) {
