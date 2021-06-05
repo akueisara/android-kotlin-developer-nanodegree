@@ -36,22 +36,30 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     suspend fun getAsteroids() {
         withContext(Dispatchers.IO) {
-            val responseString = NeoWSApi.retrofitService.getAsteroidsAsync(
-                dates.first,
-                dates.second,
-                "wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe"
-            )
-            val asteroids = parseAsteroidsJsonResult(JSONObject(responseString))
-            database.asteroidDatabaseDao.insert(asteroids)
+            try {
+                val responseString = NeoWSApi.retrofitService.getAsteroidsAsync(
+                    dates.first,
+                    dates.second,
+                    "wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe"
+                )
+                val asteroids = parseAsteroidsJsonResult(JSONObject(responseString))
+                database.asteroidDatabaseDao.insert(asteroids)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     suspend fun getPictureOfDay() {
         withContext(Dispatchers.IO) {
-            val pictureOfTheDay =
-                NeoWSApi.retrofitService.getPictureOfDayAsync("wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe")
-                    .await()
-            database.asteroidDatabaseDao.insert(pictureOfTheDay)
+            try {
+                val pictureOfTheDay =
+                    NeoWSApi.retrofitService.getPictureOfDayAsync("wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe")
+                        .await()
+                database.asteroidDatabaseDao.insert(pictureOfTheDay)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
