@@ -1,11 +1,12 @@
 package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.NeoWSApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.model.AstroPictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -15,6 +16,7 @@ import java.util.*
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
     val asteroids: LiveData<List<Asteroid>> = database.asteroidDatabaseDao.getAsteroids()
+    val astroPictureOfDay: LiveData<AstroPictureOfDay> = database.asteroidDatabaseDao.getPictureOfTheDay()
 
     suspend fun getAsteroids() {
         withContext(Dispatchers.IO) {
@@ -26,6 +28,15 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             )
             val asteroids = parseAsteroidsJsonResult(JSONObject(responseString))
             database.asteroidDatabaseDao.insert(asteroids)
+        }
+    }
+
+    suspend fun getPictureOfDay() {
+        withContext(Dispatchers.IO) {
+            val pictureOfTheDay =
+                NeoWSApi.retrofitService.getPictureOfDayAsync("wxthVHrXBVZFK6x7nweX6eKsfPfV98V6BIFwYlTe")
+                    .await()
+            database.asteroidDatabaseDao.insert(pictureOfTheDay)
         }
     }
 

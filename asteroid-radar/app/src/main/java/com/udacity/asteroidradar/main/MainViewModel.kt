@@ -12,10 +12,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val asteroidRepository = AsteroidRepository(database)
 
     val asteroidList = asteroidRepository.asteroids
+    val astroPictureOfDay = asteroidRepository.astroPictureOfDay
 
     init {
         viewModelScope.launch {
             asteroidRepository.getAsteroids()
+            asteroidRepository.getPictureOfDay()
         }
     }
 }

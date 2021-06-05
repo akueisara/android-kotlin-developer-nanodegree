@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
