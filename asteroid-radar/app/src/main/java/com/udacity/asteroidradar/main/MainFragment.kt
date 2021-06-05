@@ -11,6 +11,10 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
+    enum class AsteroidFilter {
+        ALL, WEEK, TODAY
+    }
+
     private val viewModel: MainViewModel by lazy {
         val activity = requireNotNull(this.activity)
         ViewModelProvider(this, MainViewModelFactory(activity.application)).get(MainViewModel::class.java)
@@ -48,6 +52,11 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
+        when(item.itemId) {
+            R.id.show_week_menu-> viewModel.filterAsteroidsBy(AsteroidFilter.WEEK)
+            R.id.show_today_menu -> viewModel.filterAsteroidsBy(AsteroidFilter.TODAY)
+            R.id.show_saved_menu-> viewModel.filterAsteroidsBy(AsteroidFilter.ALL)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

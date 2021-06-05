@@ -1,11 +1,14 @@
 package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.model.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.NeoWSApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.main.MainFragment
 import com.udacity.asteroidradar.model.AstroPictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,12 +18,24 @@ import java.util.*
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
-    val asteroids: LiveData<List<Asteroid>> = database.asteroidDatabaseDao.getAsteroids()
+    private var asteroidFilter = MutableLiveData(MainFragment.AsteroidFilter.ALL)
+    private val dates = getStartAndEndDates()
+
+    val asteroids: LiveData<List<Asteroid>> =
+        Transformations.switchMap(asteroidFilter) { menuFilter ->
+            when (menuFilter) {
+                MainFragment.AsteroidFilter.ALL -> database.asteroidDatabaseDao.getAllAsteroids()
+                MainFragment.AsteroidFilter.WEEK -> database.asteroidDatabaseDao.getWeeklyAsteroids(dates.first, dates.second)
+                MainFragment.AsteroidFilter.TODAY -> database.asteroidDatabaseDao.getAsteroidsForToday(dates.first)
+                else -> database.asteroidDatabaseDao.getAllAsteroids()
+            }
+
+        }
+
     val astroPictureOfDay: LiveData<AstroPictureOfDay> = database.asteroidDatabaseDao.getPictureOfTheDay()
 
     suspend fun getAsteroids() {
         withContext(Dispatchers.IO) {
-            val dates = getStartAndEndDates()
             val responseString = NeoWSApi.retrofitService.getAsteroidsAsync(
                 dates.first,
                 dates.second,
@@ -38,6 +53,10 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                     .await()
             database.asteroidDatabaseDao.insert(pictureOfTheDay)
         }
+    }
+
+    fun updateFilter(filter: MainFragment.AsteroidFilter) {
+        asteroidFilter.value = filter
     }
 
     private fun getStartAndEndDates(): Pair<String, String> {

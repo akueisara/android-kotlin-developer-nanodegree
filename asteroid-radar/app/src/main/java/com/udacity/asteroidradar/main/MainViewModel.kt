@@ -20,4 +20,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             asteroidRepository.getPictureOfDay()
         }
     }
+
+    fun filterAsteroidsBy(filter: MainFragment.AsteroidFilter) {
+        asteroidRepository.updateFilter(filter)
+    }
 }
