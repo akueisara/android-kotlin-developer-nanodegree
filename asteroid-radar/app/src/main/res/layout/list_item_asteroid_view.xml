@@ -43,16 +43,17 @@
             android:text="@{asteroid.closeApproachDate}"
             android:textColor="@color/default_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/asteroidHazardousImageView"
+            app:layout_constraintEnd_toStartOf="@+id/asteroid_hazardous_image_view"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/asteroid_name"
             tools:text="2020-02-08" />
 
         <ImageView
-            android:id="@+id/asteroidHazardousImageView"
+            android:id="@+id/asteroid_hazardous_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@{asteroid.potentiallyHazardous ? @string/potentially_hazardous_asteroid_image : @string/not_hazardous_asteroid_image}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

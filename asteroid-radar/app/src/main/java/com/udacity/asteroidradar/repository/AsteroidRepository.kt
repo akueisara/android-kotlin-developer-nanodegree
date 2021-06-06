@@ -8,7 +8,7 @@ import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.NeoWSApi
 import com.udacity.asteroidradar.api.NetworkUtils
 import com.udacity.asteroidradar.database.AsteroidDatabase
-import com.udacity.asteroidradar.main.MainFragment
+import com.udacity.asteroidradar.model.AsteroidFilter
 import com.udacity.asteroidradar.model.PictureOfDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,15 +18,15 @@ import java.util.*
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
-    private var asteroidFilter = MutableLiveData(MainFragment.AsteroidFilter.ALL)
+    private var asteroidFilter = MutableLiveData(AsteroidFilter.ALL)
     private val dates = getStartAndEndDates()
 
     val asteroids: LiveData<List<Asteroid>> =
         Transformations.switchMap(asteroidFilter) { menuFilter ->
             when (menuFilter) {
-                MainFragment.AsteroidFilter.ALL -> database.asteroidDatabaseDao.getAllAsteroids()
-                MainFragment.AsteroidFilter.WEEK -> database.asteroidDatabaseDao.getWeeklyAsteroids(dates.first, dates.second)
-                MainFragment.AsteroidFilter.TODAY -> database.asteroidDatabaseDao.getAsteroidsForToday(dates.first)
+                AsteroidFilter.ALL -> database.asteroidDatabaseDao.getAllAsteroids()
+                AsteroidFilter.WEEK -> database.asteroidDatabaseDao.getWeeklyAsteroids(dates.first, dates.second)
+                AsteroidFilter.TODAY -> database.asteroidDatabaseDao.getAsteroidsForToday(dates.first)
                 else -> database.asteroidDatabaseDao.getAllAsteroids()
             }
 
@@ -63,7 +63,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         }
     }
 
-    fun updateFilter(filter: MainFragment.AsteroidFilter) {
+    fun updateFilter(filter: AsteroidFilter) {
         asteroidFilter.value = filter
     }
 

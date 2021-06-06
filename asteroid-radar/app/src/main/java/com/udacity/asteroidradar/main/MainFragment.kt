@@ -8,12 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.model.AsteroidFilter
 
 class MainFragment : Fragment() {
-
-    enum class AsteroidFilter {
-        ALL, WEEK, TODAY
-    }
 
     private val viewModel: MainViewModel by lazy {
         val activity = requireNotNull(this.activity)
