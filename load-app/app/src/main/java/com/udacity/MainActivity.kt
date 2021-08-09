@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -86,13 +85,15 @@ class MainActivity : AppCompatActivity() {
         val cursor = downloadManager.query(query)
         if (cursor != null && cursor.moveToFirst()) {
             when(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))) {
-                DownloadManager.STATUS_RUNNING -> {
+                DownloadManager.STATUS_PENDING -> {
                     custom_button.setLoadingButtonState(ButtonState.Loading)
+                }
+                DownloadManager.STATUS_RUNNING -> {
                     val downloadedSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                     val totalSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
                     if (totalSize != -1L) {
-                        // TODO: Update the download progress of the LoadingButton
-                        Log.d(TAG, "Progress: ${(downloadedSize.toFloat() / totalSize) * 100}")
+                        val progress = (downloadedSize.toFloat() / totalSize) * 100
+                        custom_button.setLoadingProgress(progress)
                     }
                 }
                 DownloadManager.STATUS_SUCCESSFUL -> {
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                     stopQueryProgress()
                 }
                 DownloadManager.STATUS_FAILED -> {
-                    custom_button.setLoadingButtonState(ButtonState.Completed)
+                    custom_button.setLoadingButtonState(ButtonState.Failed)
                     stopQueryProgress()
                 }
             }
@@ -114,7 +115,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = MainActivity::class.java.simpleName
         private const val URL =
             "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"
         private const val CHANNEL_ID = "channelId"
