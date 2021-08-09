@@ -23,11 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var downloadManager: DownloadManager
     private var downloadID: Long = 0
     private var downloading = false
-    private var shouldDisplayNotification = false
 
     private var downloadURL: String? = null
     private var downloadOptionName: String? = null
-    private var totalEstimate = Long.MAX_VALUE
+    private var estimatedTotalSize = Long.MAX_VALUE
 
     private lateinit var notificationManager: NotificationManager
 
@@ -82,13 +81,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(receiver)
+        if(downloading) {
+            cancelDownload()
+        }
     }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-            if(downloadID == id && shouldDisplayNotification) {
-                shouldDisplayNotification = false
+            if(downloadID == id) {
                 displayNotification()
             }
         }
@@ -143,7 +144,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun cancelDownload() {
+        downloadManager.remove(downloadID)
+    }
+
     private fun startQueryProgress() {
+        estimatedTotalSize = Long.MAX_VALUE
         downloading = true
         handler.post(queryProgressRunnable)
     }
@@ -164,22 +170,21 @@ class MainActivity : AppCompatActivity() {
                 DownloadManager.STATUS_RUNNING -> {
                     val downloadedSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                     val totalSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                    if (downloadedSize != 0L && totalEstimate == Long.MAX_VALUE) {
-                        totalEstimate = downloadedSize * 100
+                    // if totalSize is -1L (unknown) and the downloaded size is not 0L, we give an estimated total size for the progress value.
+                    // Once it's given, the estimated total size should be fixed until totalSize is not -1L
+                    if (downloadedSize != 0L && estimatedTotalSize == Long.MAX_VALUE) {
+                        estimatedTotalSize = downloadedSize * 100
                     } else if (totalSize != -1L) {
-                        totalEstimate = totalSize
+                        estimatedTotalSize = totalSize
                     }
-                    val progress = (downloadedSize.toFloat() / totalEstimate) * 100
+                    val progress = (downloadedSize.toFloat() / estimatedTotalSize) * 100
                     custom_button.setLoadingProgress(progress)
                 }
                 DownloadManager.STATUS_SUCCESSFUL -> {
-                    shouldDisplayNotification = true
-                    totalEstimate = Long.MAX_VALUE
                     custom_button.setLoadingButtonState(ButtonState.Completed)
                     stopQueryProgress()
                 }
                 DownloadManager.STATUS_FAILED -> {
-                    totalEstimate = Long.MAX_VALUE
                     custom_button.setLoadingButtonState(ButtonState.Failed)
                     stopQueryProgress()
                 }
