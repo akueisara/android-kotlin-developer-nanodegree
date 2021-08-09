@@ -71,6 +71,14 @@ Explain what each test does and why
 1. APK file of the final project.
 2. Git Repository with the code.
 
+## A sample of the output images
+
+<img width="473" alt="1" src="https://user-images.githubusercontent.com/7802052/128747056-b73b6fba-111b-4bd4-ad8e-b09958adc9cc.png">
+<img width="470" alt="2" src="https://user-images.githubusercontent.com/7802052/128747065-ae107332-cfef-4867-82ee-7ec38f03e484.png">
+<img width="471" alt="3" src="https://user-images.githubusercontent.com/7802052/128747072-01bc6702-5e05-4327-8896-893024ea9e68.png">
+<img width="468" alt="4" src="https://user-images.githubusercontent.com/7802052/128747077-5584b784-a63c-4cce-87e8-f71c49d8c037.png">
+
+
 ## Built With
 
 * [Koin](https://github.com/InsertKoinIO/koin) - A pragmatic lightweight dependency injection framework for Kotlin.
