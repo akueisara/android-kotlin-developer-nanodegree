@@ -12,6 +12,7 @@
     <string name="notification_button">See changes</string>
 
     <string name="button_name">Download</string>
-    <string name="button_loading">We are loading </string>
+    <string name="button_loading">We are loading</string>
+    <string name="select_file_toast">Please select the file to download</string>
     <string name="title_activity_detail">DetailActivity</string>
 </resources>

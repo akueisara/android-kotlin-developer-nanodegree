@@ -23,23 +23,27 @@
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/radio_button_margin"
         app:layout_constraintBottom_toTopOf="@+id/custom_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/download_image_view">
 
         <RadioButton
+            android:id="@+id/glide_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/glide_download_option" />
 
         <RadioButton
+            android:id="@+id/loadapp_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/radio_button_margin"
             android:text="@string/loadapp_download_option" />
 
         <RadioButton
+            android:id="@+id/retrofit_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/radio_button_margin"

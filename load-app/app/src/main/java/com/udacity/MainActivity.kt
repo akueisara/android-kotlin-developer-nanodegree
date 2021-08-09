@@ -2,14 +2,13 @@ package com.udacity
 
 import android.app.DownloadManager
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -20,9 +19,11 @@ class MainActivity : AppCompatActivity() {
     private var downloadID: Long = 0
     private var downloading = false
 
+    private var downloadURL: String? = null
+    private var downloadOptionName: String? = null
+    private var totalEstimate = Long.MAX_VALUE
+
     private lateinit var notificationManager: NotificationManager
-    private lateinit var pendingIntent: PendingIntent
-    private lateinit var action: NotificationCompat.Action
 
     private val handler: Handler = Handler(Looper.getMainLooper())
 
@@ -38,7 +39,32 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
         custom_button.setOnClickListener {
+            if(downloadURL == null) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.select_file_toast),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             download()
+        }
+
+        radio_group.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.glide_radio_button -> {
+                    downloadURL = GLIDE_URL
+                    downloadOptionName = getString(R.string.glide_download_option)
+                }
+                R.id.loadapp_radio_button -> {
+                    downloadURL = LOAD_APP_URL
+                    downloadOptionName = getString(R.string.loadapp_download_option)
+                }
+                R.id.retrofit_radio_button -> {
+                    downloadURL = RETROFIT_URL
+                    downloadOptionName = getString(R.string.retrofit_download_option)
+                }
+            }
         }
     }
 
@@ -55,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun download() {
         val request =
-            DownloadManager.Request(Uri.parse(URL))
+            DownloadManager.Request(Uri.parse(downloadURL))
                 .setTitle(getString(R.string.app_name))
                 .setDescription(getString(R.string.app_description))
                 .setRequiresCharging(false)
@@ -91,21 +117,27 @@ class MainActivity : AppCompatActivity() {
                 DownloadManager.STATUS_RUNNING -> {
                     val downloadedSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                     val totalSize = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                    if (totalSize != -1L) {
-                        val progress = (downloadedSize.toFloat() / totalSize) * 100
-                        custom_button.setLoadingProgress(progress)
+                    if (downloadedSize != 0L && totalEstimate == Long.MAX_VALUE) {
+                        totalEstimate = downloadedSize * 100
+                    } else if (totalSize != -1L) {
+                        totalEstimate = totalSize
                     }
+                    val progress = (downloadedSize.toFloat() / totalEstimate) * 100
+                    custom_button.setLoadingProgress(progress)
                 }
                 DownloadManager.STATUS_SUCCESSFUL -> {
+                    totalEstimate = Long.MAX_VALUE
                     custom_button.setLoadingButtonState(ButtonState.Completed)
                     stopQueryProgress()
                 }
                 DownloadManager.STATUS_FAILED -> {
+                    totalEstimate = Long.MAX_VALUE
                     custom_button.setLoadingButtonState(ButtonState.Failed)
                     stopQueryProgress()
                 }
             }
         } else {
+            custom_button.setLoadingButtonState(ButtonState.Failed)
             stopQueryProgress()
         }
         cursor.close()
@@ -115,9 +147,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val URL =
-            "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"
-        private const val CHANNEL_ID = "channelId"
+        private const val GLIDE_URL = "https://github.com/bumptech/glide/archive/master.zip"
+        private const val LOAD_APP_URL = "https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter/archive/master.zip"
+        private const val RETROFIT_URL = "https://search.maven.org/remote_content?g=com.squareup.retrofit2&a=retrofit&v=LATEST"
     }
 
 }

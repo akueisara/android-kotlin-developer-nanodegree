@@ -13,7 +13,7 @@ class LoadingButton @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     companion object {
-        private val marginBetweenTextAndCircleProgress = 8f.dpToPx
+        private val marginBetweenTextAndCircleProgress = 4f.dpToPx
         private val circleProgressRadius = 15f.dpToPx
     }
 
@@ -36,6 +36,7 @@ class LoadingButton @JvmOverloads constructor(
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         when(new) {
             ButtonState.Loading -> {
+                isClickable = false
                 isloading = true
                 buttonText = context.getString(R.string.button_loading)
                 invalidate()
@@ -145,6 +146,7 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     private fun initState() {
+        isClickable = true
         isloading = false
         rectProgressBounds = Rect(0, 0, 0, heightSize)
         currentOvalAngle = 0f
@@ -157,6 +159,9 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     fun setLoadingProgress(value: Float) {
+        if(value >= 100) {
+            return
+        }
         currentProgressValue = value
         val rectMultiplier = widthSize.toFloat() / 100
         val ovalMultiplier = 360.toFloat() / 100
