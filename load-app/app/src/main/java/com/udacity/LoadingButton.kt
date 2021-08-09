@@ -20,7 +20,9 @@ class LoadingButton @JvmOverloads constructor(
     private var widthSize = 0
     private var heightSize = 0
 
-    private var buttonTextSize = 0f
+    private var buttonBackgroundColor: Int
+    private var buttonTextSize: Float
+    private var buttonTextColor: Int
     private var buttonText = context.getString(R.string.button_name)
 
     private var textBounds = Rect()
@@ -53,7 +55,6 @@ class LoadingButton @JvmOverloads constructor(
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
-        color = Color.WHITE
     }
 
     private val rectProgressPaint = Paint().apply {
@@ -76,8 +77,11 @@ class LoadingButton @JvmOverloads constructor(
             R.styleable.LoadingButton,
             0, 0).apply {
             try {
+                buttonTextColor = getColor(R.styleable.LoadingButton_android_textColor, Color.WHITE)
+                textPaint.color = buttonTextColor
                 buttonTextSize = getDimension(R.styleable.LoadingButton_android_textSize, defTextSize)
                 textPaint.textSize = buttonTextSize
+                buttonBackgroundColor = getColor(R.styleable.LoadingButton_android_background, context.getColor(R.color.colorPrimary))
             } finally {
                 recycle()
             }
@@ -89,7 +93,7 @@ class LoadingButton @JvmOverloads constructor(
         super.onDraw(canvas)
 
         // Button background color
-        canvas?.drawColor(context.getColor(R.color.colorPrimary))
+        canvas?.drawColor(buttonBackgroundColor)
 
         // Rectangle loading progress
         if (isloading) {
