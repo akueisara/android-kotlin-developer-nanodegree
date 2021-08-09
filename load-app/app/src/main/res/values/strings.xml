@@ -16,5 +16,10 @@
     <string name="button_name">Download</string>
     <string name="button_loading">We are loading</string>
     <string name="select_file_toast">Please select the file to download</string>
+
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="file_name_title">File Name:</string>
+    <string name="status_name_title">Status:</string>
+    <string name="success_status">Success</string>
+    <string name="ok">OK</string>
 </resources>
