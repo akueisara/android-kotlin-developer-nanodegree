@@ -7,9 +7,11 @@
     <string name="loadapp_download_option">LoadApp - Current repository by Udacity</string>
     <string name="retrofit_download_option">Retrofit - Type-Safe HTTP client for Android and Java by Square, Inc</string>
 
+    <string name="notification_channel_id" translatable="false">load_app_channel</string>
+    <string name="notification_channel_name" translatable="true">LoadApp</string>
     <string name="notification_title">Udacity: Android Kotlin Nanodegree </string>
     <string name="notification_description">The Project 3 repository is downloaded</string>
-    <string name="notification_button">See changes</string>
+    <string name="notification_button">Check the status</string>
 
     <string name="button_name">Download</string>
     <string name="button_loading">We are loading</string>

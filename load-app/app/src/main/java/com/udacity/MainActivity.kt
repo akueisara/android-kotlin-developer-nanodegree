@@ -1,14 +1,19 @@
 package com.udacity
 
 import android.app.DownloadManager
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.*
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.udacity.utils.sendNotification
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -18,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var downloadManager: DownloadManager
     private var downloadID: Long = 0
     private var downloading = false
+    private var shouldDisplayNotification = false
 
     private var downloadURL: String? = null
     private var downloadOptionName: String? = null
@@ -66,6 +72,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        createChannel(
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_channel_name)
+        )
     }
 
     override fun onDestroy() {
@@ -76,7 +87,43 @@ class MainActivity : AppCompatActivity() {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            if(downloadID == id && shouldDisplayNotification) {
+                shouldDisplayNotification = false
+                displayNotification()
+            }
         }
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                // Disable badges for this channel
+                setShowBadge(false)
+            }
+
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = getString(R.string.notification_description)
+
+            val notificationManager = this.getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+    }
+
+    private fun displayNotification() {
+        notificationManager = ContextCompat.getSystemService(
+            this,
+            NotificationManager::class.java
+        ) as NotificationManager
+
+        notificationManager.sendNotification(applicationContext, downloadOptionName)
     }
 
     private fun download() {
@@ -126,6 +173,7 @@ class MainActivity : AppCompatActivity() {
                     custom_button.setLoadingProgress(progress)
                 }
                 DownloadManager.STATUS_SUCCESSFUL -> {
+                    shouldDisplayNotification = true
                     totalEstimate = Long.MAX_VALUE
                     custom_button.setLoadingButtonState(ButtonState.Completed)
                     stopQueryProgress()
