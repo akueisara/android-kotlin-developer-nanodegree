@@ -1,7 +1,9 @@
 package com.udacity.project4.authentication
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthUI
@@ -13,6 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
+import com.udacity.project4.locationreminders.RemindersActivity
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
@@ -28,7 +31,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityAuthenticationBinding>(this, R.layout.activity_authentication)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_authentication)
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -48,20 +51,30 @@ class AuthenticationActivity : AppCompatActivity() {
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK) {
-            // Successfully signed in
-            // TODO: If the user was authenticated, send him to RemindersActivity
+            // If the user was authenticated, send him to RemindersActivity
+            startActivity(Intent(this, RemindersActivity::class.java))
+            finish()
         } else {
             // Sign in failed
             if (response == null) {
                 // User cancelled
+                Toast.makeText(this, R.string.sign_in_cancelled, Toast.LENGTH_SHORT).show()
                 return
             }
-            if (response.error!!.errorCode == ErrorCodes.NO_NETWORK) {
+            if (response.error?.errorCode == ErrorCodes.NO_NETWORK) {
                 // No internet connection
+                Toast.makeText(this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            if (response.error?.errorCode == ErrorCodes.ERROR_USER_DISABLED) {
+                Toast.makeText(this, R.string.account_disabled, Toast.LENGTH_SHORT).show()
                 return
             }
             // Unknown error
-            Log.e(TAG, "Sign-in error: ", response.error)
+            val errorMessage = getString(R.string.unknown_error, " ${response.error}")
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+            Log.e(TAG, errorMessage)
         }
     }
 
