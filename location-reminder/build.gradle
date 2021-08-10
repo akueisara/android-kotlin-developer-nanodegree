@@ -31,6 +31,7 @@ buildscript {
         kotlinVersion = '1.5.10'
         materialVersion = '1.4.0'
         mockitoVersion = '3.9.0'
+        multidexVersion = '2.0.1'
         navigationVersion = "2.3.5"
         playServicesVersion = '18.0.0'
         recyclerViewVersion = '1.2.1'
