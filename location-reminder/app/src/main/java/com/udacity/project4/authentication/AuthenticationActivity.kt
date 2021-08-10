@@ -93,9 +93,8 @@ class AuthenticationActivity : AppCompatActivity() {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
-            // TODO: a bonus is to customize the sign in flow to look nice using :
-            //https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md#custom-layout
-//            .setAuthMethodPickerLayout(customLayout)
+            .setLogo(R.drawable.map)
+            .setTheme(R.style.FirebaseTheme)
             .build()
         signInLauncher.launch(signInIntent)
     }
